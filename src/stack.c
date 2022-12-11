@@ -6,7 +6,10 @@ struct node{
     char* value;
     struct node* next;
 };
-
+/**
+ * value null
+ * return head of linked list
+ * */
 struct node* init_stack(){
 
     struct node* head = (struct node*)malloc(sizeof(struct node));
@@ -15,16 +18,23 @@ struct node* init_stack(){
 
     return head;
 }
+/**
+ * adds a new node to linked list with value value
+ * */
 void push(struct node* nodes,char* value){
-
     struct node* pNode = nodes;
+    /* printf("push %s\n",value); */
     while(pNode->next != NULL){
         pNode = pNode->next;
     }
     struct node* newNode = (struct node*)malloc(sizeof(struct node));
     /* memset(newNode,0,sizeof(struct node)); */
     newNode->next = NULL;
-    newNode->value = value;
+    
+    newNode->value = malloc(sizeof(value)+1);
+
+    strcpy(newNode->value,value);
+
     pNode->next = newNode;
 }
 void printStack(struct node *head,const char* sep){
@@ -56,6 +66,9 @@ struct node* get(struct node* head, int i){
     }
     return NULL;
 }
+/**
+ * return last element
+ **/
 struct node* peek(struct node* head){
     struct node* pNode = head;
     struct node* prev = NULL;
@@ -65,6 +78,9 @@ struct node* peek(struct node* head){
     }
     return pNode;
 }
+/**
+ * return last element and removed is
+ **/
 struct node* pop(struct node* head){
     struct node* pNode = head;
     struct node* prev = NULL;
@@ -72,6 +88,9 @@ struct node* pop(struct node* head){
         prev = pNode;
         pNode = pNode->next;
     }
-    prev->next = NULL;
+    if(prev != NULL){
+        prev->next = NULL;
+    }
     return pNode;
+
 }

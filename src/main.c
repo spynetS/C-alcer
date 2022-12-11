@@ -33,7 +33,8 @@ int getLevel(char* operator){
     if(strcmp(operator,"/")==0) return 1;
     if(strcmp(operator,"+")==0) return 0;
     if(strcmp(operator,"-")==0) return 0;
-    return -1;
+    if(strcmp(operator,"(")==0) return -1;
+    return 0;
 }
 
 void addOperator(struct node* stack,struct node* output,char* operator){
@@ -41,8 +42,8 @@ void addOperator(struct node* stack,struct node* output,char* operator){
     if(stackLen(stack)>0){
         int topLevel = getLevel(peek(stack)->value);
         int myLevel = getLevel(operator);
-        /* printf("top %d\n",topLevel); */
-        /* printf("my %d\n",myLevel); */
+        printf("top %d\n",topLevel);
+        printf("my %d\n",myLevel);
         if(myLevel <= topLevel){
             push(output,pop(stack)->value);
             push(stack,operator);
@@ -54,7 +55,7 @@ void addOperator(struct node* stack,struct node* output,char* operator){
     }
 
 }
-
+//Returns a string in posfixform from a linkedlist of infix
 char* infixToPosfix(struct node *expression){
     // holds the operators 
     struct node* stack = init_stack();
@@ -73,11 +74,11 @@ char* infixToPosfix(struct node *expression){
         else if(strcmp(term,")")==0){
             /* printf("found p \n"); */
             char* poped = pop(stack)->value; 
-
-            while(strcmp(poped,"(")!=0){
-                /* printf("--%s\n",poped); */
+            printf("peek %s\n",poped);
+            while(0==0){
                 push(output,poped);
 
+                printf("--%s\n",peek(stack)->value);
                 if(strcmp(peek(stack)->value,"(")==0) break;
 
                 poped = pop(stack)->value;
@@ -92,7 +93,7 @@ char* infixToPosfix(struct node *expression){
             push(output,term);
         }
         
-        printf("%s\nstack ",term);
+        printf("r %s\nstack ",term);
         printStack(stack," ");
         printf("output ");
         printStack(output," ");
@@ -108,12 +109,7 @@ char* infixToPosfix(struct node *expression){
     return "";
 }
  /*
- *
- *  iterate through string
- *  if ( push current word 
- *  if ) push current word 
- *  if operar push to list clear word
- *
+ *Infix string addded all operands and operators to a linkded list
  **/
 struct node* getExpression(char* expressionStr){
     struct node* expression = init_stack();
@@ -127,49 +123,33 @@ struct node* getExpression(char* expressionStr){
         len++;
         if(isOperator(&character)==0){
             if(strlen(word)>0){
-                char* pword = (char*)malloc(sizeof(char*)*sizeof(word)/sizeof(word[0]));
-                strcpy(pword, word);
-                printf("%c ",character);
-                printf("%s\n",&word[0]);
-                push(expression,pword);
+                push(expression,word);
                 /* printStack(expression,":"); */
             }
-
-            char* pc = (char*)malloc(sizeof(char*));
-            strcpy(pc, &character);
-            push(expression,pc);
-
+            push(expression,&character);
+            memset(word,0,sizeof(word));
             count=0;
-            memset(word,0,256);
             continue;
         }
         else if(character=='('){
 
             if(strlen(word)>0){
-                char* pword = (char*)malloc(sizeof(char*)*sizeof(word)/sizeof(word[0]));
-                strcpy(pword, word);
-                printf("%c ",character);
-                printf("%s\n",&word[0]);
-                push(expression,pword);
+                push(expression,word);
             }
 
             push(expression,"(");
+            memset(word,0,sizeof(word));
             count=0;
-            memset(word,0,256);
             continue;
         }
         else if(character==')'){
             if(strlen(word)>0){
-                char* pword = (char*)malloc(sizeof(char*)*sizeof(word)/sizeof(word[0]));
-                strcpy(pword, word);
-                printf("%c ",character);
-                printf("%s\n",&word[0]);
-                push(expression,pword);
+                push(expression,word);
             }
 
             push(expression,")");
+            memset(word,0,sizeof(word));
             count=0;
-            memset(word,0,256);
             continue;
         }
         else{
@@ -178,9 +158,8 @@ struct node* getExpression(char* expressionStr){
 
         count++;
     }
-    char* pword = (char*)malloc(sizeof(char*)*sizeof(word)/sizeof(word[0]));
-    strcpy(pword, word);
-    push(expression,pword);
+    printf("next %s\n",expression->next->next->next->value);
+    push(expression,word);
 
     return expression;
 }
@@ -196,23 +175,24 @@ int main(){
     printf("%s\n",expressionStr);
     /* printStack(," "); */
 
-    /* struct node* expression = getExpression(expressionStr); */
-    struct node* expression = init_stack();
-    push(expression, "(");
-    push(expression, "10");
-    push(expression, "+");
-    push(expression, "10");
-    push(expression, ")");
-    push(expression, "/");
-    push(expression, "2");
-    push(expression, "*");
-    push(expression, "6");
+    struct node* expression = getExpression(expressionStr);
+    /* struct node* expression = init_stack(); */
+    /* push(expression, "("); */
+    /* push(expression, "10"); */
+    /* push(expression, "+"); */
+    /* push(expression, "10"); */
+    /* push(expression, ")"); */
+    /* push(expression, "/"); */
+    /* push(expression, "2"); */
+    /* push(expression, "*"); */
+    /* push(expression, "6"); */
 
     /* push(expression, "10"); */
     /* push(expression, "+"); */
     /* push(expression, "10"); */
     /* push(expression, "-"); */
     /* push(expression, "10"); */
+    printStack(expression, " ");
     printStack(expression, "");
     /* printf("%s\n",(expression)); */
     /* strcpy(addSpaces(expression),expression ); */
