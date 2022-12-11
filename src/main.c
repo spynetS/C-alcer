@@ -26,6 +26,7 @@ int main(int argc, char *argv[]){
     operators[1] = getNewOperator("-", 0);
     operators[2] = getNewOperator("*", 1);
     operators[3] = getNewOperator("/", 1);
+    operators[4] = getNewOperator("^", 2);
     
     checkFlags(argc,argv);
 

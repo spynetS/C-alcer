@@ -19,7 +19,7 @@ struct Operator getNewOperator(char* symbol, int level){
    return new_op;
 }
 
-struct Operator operators[4];
+struct Operator operators[5];
 
 int isOperator(char* operator){
     for(int i = 0;i < sizeof(operators)/sizeof(operators[0]); i++){
@@ -31,6 +31,7 @@ int isOperator(char* operator){
 }
 
 int getLevel(char* operator){
+    if(strcmp(operator,"^")==0) return 2;
     if(strcmp(operator,"*")==0) return 1;
     if(strcmp(operator,"/")==0) return 1;
     if(strcmp(operator,"+")==0) return 0;
