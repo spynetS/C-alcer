@@ -118,7 +118,8 @@ struct node* getExpression(char* expressionStr){
 
     int count = 0;
     for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
-        if(isOperator(&character)==0){
+        // if the char is a operator add the prev word to the list
+        if(isOperator(&character)==0 ){
             if(strlen(word)>0){
                 push(expression,word);
                 /* printStack(expression,":"); */
@@ -156,6 +157,9 @@ struct node* getExpression(char* expressionStr){
         count++;
     }
     push(expression,word);
+    if(debug==1){
+        printStack(expression," ");
+    }
 
     return expression;
 }

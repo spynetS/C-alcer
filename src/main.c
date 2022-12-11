@@ -30,18 +30,19 @@ int main(int argc, char *argv[]){
     
     checkFlags(argc,argv);
 
-    /* char* expressionStr = "10+10/2*6"; */
+    // this is the string that will get parsed to infix
     char expressionStr[128];
+    //if inputflag contains a str set the expressionStr to that
     if(strlen(input)<=0){
         fgets(expressionStr,128,stdin);
         expressionStr[strlen(expressionStr)-1] = '\0';
     }else{
         strcpy(expressionStr,input);
     }
-    /* printf("%s\n",expressionStr); */
 
+    //parsed string to linkedlist
     struct node* expression = getExpression(expressionStr);
-
+    // translate infix linkedlist to posfix linkedlist
     printStack(infixToPosfix(expression)," ");
 
     return 0;
