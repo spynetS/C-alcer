@@ -22,7 +22,7 @@ void push(struct node* nodes,char* value){
         pNode = pNode->next;
     }
     struct node* newNode = (struct node*)malloc(sizeof(struct node));
-    memset(newNode,0,sizeof(struct node));
+    /* memset(newNode,0,sizeof(struct node)); */
     newNode->next = NULL;
     newNode->value = value;
     pNode->next = newNode;
@@ -72,7 +72,6 @@ struct node* pop(struct node* head){
         prev = pNode;
         pNode = pNode->next;
     }
-    printf("%s",prev->value);
     prev->next = NULL;
     return pNode;
 }

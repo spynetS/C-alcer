@@ -37,8 +37,8 @@ int getLevel(char* operator){
 }
 
 void addOperator(struct node* stack,struct node* output,char* operator){
+    /* printf("operators %s\n",operator); */
     if(stackLen(stack)>0){
-
         int topLevel = getLevel(peek(stack)->value);
         int myLevel = getLevel(operator);
         /* printf("top %d\n",topLevel); */
@@ -62,10 +62,11 @@ char* infixToPosfix(struct node *expression){
     struct node* output = init_stack();
 
     int len = stackLen(expression);
+    /* printStack(expression, "-"); */
 
     for(int i = 0; i < len;i++){
         char* term = get(expression,i)->value;
-
+        /* printf("%s :",get(expression,i)->value); */
         if(strcmp(term,"(")==0){
             push(stack,term);
         }
@@ -73,14 +74,14 @@ char* infixToPosfix(struct node *expression){
             /* printf("found p \n"); */
             char* poped = pop(stack)->value; 
 
-            /* while(strcmp(poped,"(")!=0){ */
-            /*     /1* printf("--%s\n",poped); *1/ */
-            /*     push(output,poped); */
+            while(strcmp(poped,"(")!=0){
+                /* printf("--%s\n",poped); */
+                push(output,poped);
 
-            /*     if(strcmp(peek(stack)->value,"(")==0) break; */
+                if(strcmp(peek(stack)->value,"(")==0) break;
 
-            /*     poped = pop(stack)->value; */
-            /* } */
+                poped = pop(stack)->value;
+            }
             //remove the last (
             pop(stack);
         }
@@ -91,15 +92,15 @@ char* infixToPosfix(struct node *expression){
             push(output,term);
         }
         
-        /* printf("%s\nstack",term); */
-        /* printStack(stack," "); */
-        /* printf("output "); */
-        /* printStack(output," "); */
+        printf("%s\nstack ",term);
+        printStack(stack," ");
+        printf("output ");
+        printStack(output," ");
     }
     // add the remaining operat operators to the output 
     int slen = stackLen(stack);
     for(int i = 0; i < slen;i++){
-        push(output,pop(stack)->value);
+       push(output,pop(stack)->value);
     }
     
     /* printStack(stack," "); */
@@ -179,7 +180,6 @@ struct node* getExpression(char* expressionStr){
     }
     char* pword = (char*)malloc(sizeof(char*)*sizeof(word)/sizeof(word[0]));
     strcpy(pword, word);
-    printf("%s\n",&word[0]);
     push(expression,pword);
 
     return expression;
@@ -196,16 +196,17 @@ int main(){
     printf("%s\n",expressionStr);
     /* printStack(," "); */
 
-    struct node* expression = getExpression(expressionStr);
-    /* push(expression, "("); */
-    /* push(expression, "10"); */
-    /* push(expression, "+"); */
-    /* push(expression, "10"); */
-    /* push(expression, ")"); */
-    /* push(expression, "/"); */
-    /* push(expression, "2"); */
-    /* push(expression, "*"); */
-    /* push(expression, "6"); */
+    /* struct node* expression = getExpression(expressionStr); */
+    struct node* expression = init_stack();
+    push(expression, "(");
+    push(expression, "10");
+    push(expression, "+");
+    push(expression, "10");
+    push(expression, ")");
+    push(expression, "/");
+    push(expression, "2");
+    push(expression, "*");
+    push(expression, "6");
 
     /* push(expression, "10"); */
     /* push(expression, "+"); */
@@ -223,6 +224,7 @@ int main(){
     /* push(head,"Test1"); */
     /* push(head,"Test2"); */
     /* printStack(head," "); */
+    
     /* pop(head); */
     /* printf("\n"); */
     /* printStack(head,"\n"); */
