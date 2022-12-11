@@ -4,13 +4,17 @@
 #include<string.h>
 #include "posfix.c"
 
+char input[128];
+
 void checkFlags(int argc, char *argv[]){
     if(argc>1){
         for(int i = 1; i< argc ; i++){
             char * arg = argv[i];
-            printf("%s\n",arg);
             if(strcmp(arg,"-d")==0){
                 debug = 1;
+            }
+            if(strcmp(arg,"-ni")==0){
+                strcpy(input,argv[i+1]);
             }
         }
     }
@@ -26,10 +30,13 @@ int main(int argc, char *argv[]){
     checkFlags(argc,argv);
 
     /* char* expressionStr = "10+10/2*6"; */
-
     char expressionStr[128];
-    fgets(expressionStr,128,stdin);
-    expressionStr[strlen(expressionStr)-1] = '\0';
+    if(strlen(input)<=0){
+        fgets(expressionStr,128,stdin);
+        expressionStr[strlen(expressionStr)-1] = '\0';
+    }else{
+        strcpy(expressionStr,input);
+    }
     /* printf("%s\n",expressionStr); */
 
     struct node* expression = getExpression(expressionStr);
