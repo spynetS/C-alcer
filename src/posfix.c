@@ -32,6 +32,7 @@ int isOperator(char* operator){
 
 int getLevel(char* operator){
     if(strcmp(operator,"^")==0) return 2;
+    if(strcmp(operator,"sin")==0) return 2;
     if(strcmp(operator,"*")==0) return 1;
     if(strcmp(operator,"/")==0) return 1;
     if(strcmp(operator,"+")==0) return 0;
@@ -116,9 +117,7 @@ struct node* getExpression(char* expressionStr){
     memset(word,0,256);
 
     int count = 0;
-    int len = 0;
     for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
-        len++;
         if(isOperator(&character)==0){
             if(strlen(word)>0){
                 push(expression,word);
