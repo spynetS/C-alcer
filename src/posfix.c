@@ -43,29 +43,26 @@ int getLevel(char* operator){
 void addOperator(struct node* stack,struct node* output,char* operator){
     /* printf("operators %s\n",operator); */
     if(stackLen(stack)>0){
-        int topLevel = getLevel(peek(stack)->value);
+        // get preoriti
         int myLevel = getLevel(operator);
 
-        if(debug == 1){
-            printf("top %i\n",topLevel);
-            printf("new %i\n",myLevel);
-        }
-        //(90-90/2-(2+3))
+
         if(strcmp(peek(stack)->value,"(")==0){
             push(stack,operator);
-        }else{
-            if(myLevel <= topLevel){
+        }
+        //is operator
+        else{
+            
+            while(stackLen(stack)>0 && 
+                myLevel <= getLevel(peek(stack)->value)){
+
+                if(debug == 1){
+                    printf("top %i\n",getLevel(peek(stack)->value));
+                    printf("new %i\n",myLevel);
+                }
                 push(output,pop(stack)->value);
-                push(stack,operator);
             }
-            /* if(myLevel > topLevel){ */
-            /*     char * high = pop(stack)->value; */
-            /*     push(stack,operator); */
-            /*     push(stack,high); */
-            /* } */
-            else{
-                push(stack,operator);
-            }
+            push(stack,operator);
         }
     }else{
         push(stack,operator);
@@ -87,7 +84,6 @@ struct node* infixToPosfix(struct node *expression){
             push(stack,term);
         }
         else if(strcmp(term,")")==0){
-            /* printf("found p \n"); */
             char* poped = pop(stack)->value; 
             while(0==0){
                 push(output,poped);
@@ -105,6 +101,7 @@ struct node* infixToPosfix(struct node *expression){
         }else{
             push(output,term);
         }
+        
         if(debug==1){
             printf("r %s\nstack ",term);
             printStack(stack," ");
