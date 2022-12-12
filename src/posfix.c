@@ -31,13 +31,12 @@ int isOperator(char* operator){
 }
 
 int getLevel(char* operator){
-    if(strcmp(operator,"^")==0) return 2;
-    if(strcmp(operator,"sin")==0) return 2;
-    if(strcmp(operator,"*")==0) return 1;
-    if(strcmp(operator,"/")==0) return 1;
-    if(strcmp(operator,"+")==0) return 0;
-    if(strcmp(operator,"-")==0) return 0;
-    if(strcmp(operator,"(")==0) return -1;
+    if(*operator == '^') return 2;
+    if(*operator == '*') return 1;
+    if(*operator == '/') return 1;
+    if(*operator == '+') return 0;
+    if(*operator == '-') return 0;
+
     return 0;
 }
 
@@ -47,11 +46,26 @@ void addOperator(struct node* stack,struct node* output,char* operator){
         int topLevel = getLevel(peek(stack)->value);
         int myLevel = getLevel(operator);
 
-        if(myLevel < topLevel){
-            push(output,pop(stack)->value);
+        if(debug == 1){
+            printf("top %i\n",topLevel);
+            printf("new %i\n",myLevel);
+        }
+        //(90-90/2-(2+3))
+        if(strcmp(peek(stack)->value,"(")==0){
             push(stack,operator);
         }else{
-            push(stack,operator);
+            if(myLevel <= topLevel){
+                push(output,pop(stack)->value);
+                push(stack,operator);
+            }
+            /* if(myLevel > topLevel){ */
+            /*     char * high = pop(stack)->value; */
+            /*     push(stack,operator); */
+            /*     push(stack,high); */
+            /* } */
+            else{
+                push(stack,operator);
+            }
         }
     }else{
         push(stack,operator);
@@ -142,7 +156,9 @@ char* parseNegativeNumbers(char* expressionStr,size_t size){
         ex[count] = ')';
         count++;
     }
-    printf("t %p\n",expressionStr);
+    if(debug==1){
+        printf("t %p\n",expressionStr);
+    }
     ex[count] = '\0';
     return strdup(ex);     
 }
@@ -152,7 +168,6 @@ char* parseNegativeNumbers(char* expressionStr,size_t size){
  **/
 struct node* getExpression(char* expressionS){
     
-
     char* expressionStr = parseNegativeNumbers(expressionS, sizeof(expressionS)); 
 
     if(debug==1){

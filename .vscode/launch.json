@@ -9,9 +9,9 @@
         ""
       ],
       "stopAtEntry": false,
-      "cwd": "/home/spy/dev/c/calcer",
+      "cwd": "/home/spy/dev/c/calcer/src",
       "environment": [],
-      "program": "/home/spy/dev/c/calcer/build/Debug/outDebug",
+      "program": "/home/spy/dev/c/calcer/src/build/Debug/outDebug",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "/bin/gdb",

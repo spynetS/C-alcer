@@ -1,8 +1,9 @@
 #include <stddef.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include "posfix.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "calc.c"
+
 
 char input[128];
 
@@ -41,9 +42,10 @@ int main(int argc, char *argv[]){
     }
 
     //parsed string to linkedlist
+    /* printf("%s",expressionStr); */ 
     struct node* expression = getExpression(expressionStr);
     // translate infix linkedlist to posfix linkedlist
-    printStack(infixToPosfix(expression)," ");
+    printf("\n> %f",calculate(infixToPosfix(expression)));
 
     return 0;
 }
