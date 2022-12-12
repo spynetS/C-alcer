@@ -6,27 +6,12 @@
 
 int debug = 0; // 1 will log what its doing
 
-struct Operator{
-    char* symbol;
-    int level;
-};
-
-struct Operator getNewOperator(char* symbol, int level){
-   struct Operator new_op;
-   new_op.symbol = symbol; 
-   new_op.level = level;
-
-   return new_op;
-}
-
-struct Operator operators[5];
-
 int isOperator(char* operator){
-    for(int i = 0;i < sizeof(operators)/sizeof(operators[0]); i++){
-        if(*operator == *operators[i].symbol){
-            return 0;
-        }
-    }
+    if(*operator == '^') return 0;
+    if(*operator == '*') return 0;
+    if(*operator == '/') return 0;
+    if(*operator == '+') return 0;
+    if(*operator == '-') return 0;
     return 1;
 }
 
@@ -41,18 +26,15 @@ int getLevel(char* operator){
 }
 
 void addOperator(struct node* stack,struct node* output,char* operator){
-    /* printf("operators %s\n",operator); */
-    if(stackLen(stack)>0){
-        // get preoriti
-        int myLevel = getLevel(operator);
 
+    if(stackLen(stack)>0){
+        int myLevel = getLevel(operator);
 
         if(strcmp(peek(stack)->value,"(")==0){
             push(stack,operator);
         }
         //is operator
         else{
-            
             while(stackLen(stack)>0 && 
                 myLevel <= getLevel(peek(stack)->value)){
 
@@ -67,8 +49,8 @@ void addOperator(struct node* stack,struct node* output,char* operator){
     }else{
         push(stack,operator);
     }
-
 }
+
 //Returns a string in posfixform from a linkedlist of infix
 struct node* infixToPosfix(struct node *expression){
     // holds the operators 
