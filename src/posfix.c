@@ -108,7 +108,7 @@ struct node* infixToPosfix(struct node *expression){
     return output;
 }
 
-void parseNegativeNumbers(char* expressionStr){
+char* parseNegativeNumbers(char* expressionStr,size_t size){
 
     int isOp = 0;
     char ex[256];
@@ -142,21 +142,18 @@ void parseNegativeNumbers(char* expressionStr){
         ex[count] = ')';
         count++;
     }
-    printf("t %s\n",expressionStr);
+    printf("t %p\n",expressionStr);
     ex[count] = '\0';
-    expressionStr = (char*)malloc(sizeof(char*));
-    memset(expressionStr,0,sizeof(expressionStr));
-    strcpy(expressionStr,ex);
-    printf("tt %s\n",expressionStr);
+    return strdup(ex);     
 }
 
  /*
  *Infix string addded all operands and operators to a linkded list
  **/
-struct node* getExpression(char* expressionStr){
+struct node* getExpression(char* expressionS){
     
 
-    parseNegativeNumbers(expressionStr); 
+    char* expressionStr = parseNegativeNumbers(expressionS, sizeof(expressionS)); 
 
     if(debug==1){
         printf("after negative check %s\n",expressionStr);
