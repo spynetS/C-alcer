@@ -2,8 +2,8 @@
 #include "posfix.c"
 
 float calculate(struct node* posfix){
-       
-    printStack(posfix, "");
+    printf("posfix: ");
+    printStack(posfix, " ");
     struct nodeF* operands = init_stackF(); 
     int len = stackLen(posfix);
 

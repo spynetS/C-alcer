@@ -101,7 +101,7 @@ struct node* infixToPosfix(struct node *expression){
         }else{
             push(output,term);
         }
-        
+
         if(debug==1){
             printf("r %s\nstack ",term);
             printStack(stack," ");
