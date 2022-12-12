@@ -107,16 +107,68 @@ struct node* infixToPosfix(struct node *expression){
     /* printStack(stack," "); */
     return output;
 }
+
+void parseNegativeNumbers(char* expressionStr){
+
+    int isOp = 0;
+    char ex[256];
+    int count = 0;
+    int isNeg = 0;
+    for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
+        if(isOperator(&character)==0 ){
+            if(isOp == 1 && character == '-'){
+                ex[count] = '(';
+                count++;
+                ex[count] = '0';
+                isNeg = 1;
+                count++;
+            }
+            else if(isNeg == 1){
+                ex[count] = ')';
+                isNeg = 0;
+                count++;
+                continue;
+            }
+            isOp = 1; 
+        }
+        else{
+            isOp=0;
+        }
+        ex[count] = character;
+
+        count++;
+    }
+    if(isNeg == 1){
+        ex[count] = ')';
+        count++;
+    }
+    printf("t %s\n",expressionStr);
+    ex[count] = '\0';
+    expressionStr = (char*)malloc(sizeof(char*));
+    memset(expressionStr,0,sizeof(expressionStr));
+    strcpy(expressionStr,ex);
+    printf("tt %s\n",expressionStr);
+}
+
  /*
  *Infix string addded all operands and operators to a linkded list
  **/
 struct node* getExpression(char* expressionStr){
+    
+
+    parseNegativeNumbers(expressionStr); 
+
+    if(debug==1){
+        printf("after negative check %s\n",expressionStr);
+    }
+
     struct node* expression = init_stack();
 
     char word[256];
     memset(word,0,256);
 
     int count = 0;
+    int isOp = 0;
     for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
         // if the char is a operator add the prev word to the list
         if(isOperator(&character)==0 ){
@@ -127,6 +179,7 @@ struct node* getExpression(char* expressionStr){
             push(expression,&character);
             memset(word,0,sizeof(word));
             count=0;
+            isOp = 1;
             continue;
         }
         else if(character=='('){
