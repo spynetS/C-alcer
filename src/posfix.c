@@ -65,6 +65,7 @@ struct node* infixToPosfix(struct node *expression){
         if(strcmp(term,"(")==0){
             push(stack,term);
         }
+        //pop all operators untill the next ( and push top output
         else if(strcmp(term,")")==0){
             char* poped = pop(stack)->value; 
             while(0==0){
@@ -101,10 +102,11 @@ struct node* infixToPosfix(struct node *expression){
     return output;
 }
 
+//checks for a operator followed by a negative sign and replaces it with(0-[next operand])
 char* parseNegativeNumbers(char* expressionStr,size_t size){
 
     int isOp = 0;
-    char ex[256];
+    char ex[256]; // new string
     int count = 0;
     int isNeg = 0;
     for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
@@ -159,37 +161,14 @@ struct node* getExpression(char* expressionS){
     memset(word,0,256);
 
     int count = 0;
-    int isOp = 0;
     for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
         // if the char is a operator add the prev word to the list
-        if(isOperator(&character)==0 ){
+        if(isOperator(&character)==0 || character=='(' || character = ')' ){
             if(strlen(word)>0){
                 push(expression,word);
                 /* printStack(expression,":"); */
             }
             push(expression,&character);
-            memset(word,0,sizeof(word));
-            count=0;
-            isOp = 1;
-            continue;
-        }
-        else if(character=='('){
-
-            if(strlen(word)>0){
-                push(expression,word);
-            }
-
-            push(expression,"(");
-            memset(word,0,sizeof(word));
-            count=0;
-            continue;
-        }
-        else if(character==')'){
-            if(strlen(word)>0){
-                push(expression,word);
-            }
-
-            push(expression,")");
             memset(word,0,sizeof(word));
             count=0;
             continue;
