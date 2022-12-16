@@ -2,10 +2,22 @@
 #include <string.h>
 
 
+struct map {
+    char* key;
+    float* value; 
+};
+
 struct node{
     void* value;
     struct node* next;
 };
+
+struct map* init_map(){
+        struct map* variable = (struct map*)malloc(sizeof(struct map));
+        memset(variable,0,sizeof(*variable));
+        return variable;
+}
+
 /**
  * value null
  * return head of linked list

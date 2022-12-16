@@ -1,9 +1,39 @@
 #include "posfix.c"
 #include <stdio.h>
+#include <string.h>
 
-float calculate(struct node* posfix){
+
+void replaceVar(struct node* posfix, struct node* variables){
+    
+    int len = stackLen(posfix);
+    int varableslen = stackLen(variables);
+
+    for(int i = 0; i < len;i++){
+        char* term = get(posfix,i)->value;
+        for(int iv = 0; iv < varableslen;iv++){
+            struct map* variable = (struct map*)get(variables,iv)->value;
+            //printf("term %s=",term);
+            //printf("%s\n",variable->key);
+            if(strcmp(term, variable->key)==0){
+
+                char* value = malloc(sizeof(char));
+                gcvt(*(float*)variable->value, 9, value);
+                strcpy(term,value);
+            }
+        }
+    }
+}
+
+
+float calculate(struct node* posfix,struct node* variables){
+    
     printf("posfix: ");
+
     printStack(posfix, " ");
+    replaceVar(posfix, variables);
+
+    printStack(posfix, " ");
+
     struct node* operands = init_stack(); 
     int len = stackLen(posfix);
 
