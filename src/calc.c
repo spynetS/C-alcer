@@ -24,13 +24,30 @@ void replaceVar(struct node* posfix, struct node* variables){
     }
 }
 
+void replaceFunctions(struct node* posfix, struct node* functions){
 
-float calculate(struct node* posfix,struct node* variables){
+    int len = stackLen(posfix);
+    int funLen = stackLen(functions);
+
+    for(int i = 0; i < len;i++){
+        char* term = get(posfix,i)->value;
+        for(int iv = 0; iv < funLen;iv++){
+            struct function* function = (struct function*)get(functions,iv)->value;
+            if(strcmp(term,function->name)==0){
+                printf("posfgix ");
+                printStack(function->posfix," ");
+            }
+        }
+    }
+}
+
+float calculate(struct node* posfix,struct node* variables, struct node* functions){
     if(debug == 1){
         printf("posfix: ");
         printStack(posfix, " ");
     }
     replaceVar(posfix, variables);
+    //replaceFunctions(posfix, functions);
     
     if(debug==1){
         printStack(posfix, " ");

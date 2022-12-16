@@ -11,7 +11,8 @@
 
 char input[128];
 int loop = 1;
-struct node* varables;
+struct node* varables; // contains all user varables
+struct node* functions; //cntains all functions (sin(1))
 
 int checkFlags(int argc, char *argv[]){
     // 1 continue with prorgam 0 to stop
@@ -36,13 +37,43 @@ int checkFlags(int argc, char *argv[]){
     return 1;
 }
 
+void replaceVariableInFunction(struct node* posfix, struct node* value){
+    int len = stackLen(posfix);
+    for(int i = 0; i < len; i++){
+        char* term = get(posfix,i)->value;
+        if(strcmp(term,"x")==0){
+            strcpy(term,"0");
+        }
+    }
+}
+
+void replaceFunction(struct node* expression, struct node* functions){
+    int len = stackLen(expression);
+    int funLen = stackLen(functions);
+    
+    for(int i = 0; i < len;i++){
+        char* term = get(expression,i)->value;
+        for(int iv = 0; iv < funLen;iv++){
+            struct function* function = (struct function*)get(functions,iv)->value;
+            if(strcmp(term,function->name)==0){
+
+                printf("posfgix ");
+                replaceFunction(function->posfix, NULL);
+                printStack(function->posfix," ");
+            }
+        }
+    }
+}
+
 void calc(char* expressionStr){
 
     //parsed string to linkedlist
     struct node* expression = getExpression(expressionStr);
+    printStack(expression,":");
+    replaceFunction(expression,functions);
     // translate infix linkedlist to posfix linkedlist
 
-    printf("> %f",calculate(infixToPosfix(expression),varables));
+    printf("> %f",calculate(infixToPosfix(expression),varables,functions));
 }
 
 int checkPreDefined(char* string){
@@ -70,9 +101,8 @@ int checkPreDefined(char* string){
         }
 
         struct node* expression = getExpression(value);
-
         // translate infix linkedlist to posfix linkedlist
-        float calculated = calculate(infixToPosfix(expression),varables);
+        float calculated = calculate(infixToPosfix(expression),varables, functions);
 
         int varLen = stackLen(varables);
 
@@ -112,6 +142,13 @@ int checkPreDefined(char* string){
 int main(int argc, char *argv[]){
 
     varables = init_stack();
+
+    functions = init_stack();
+
+    struct function* fun = init_function();
+    fun->name = "fun";
+    fun->posfix = infixToPosfix(getExpression("5*x"));
+    push(functions,fun);
 
     if(checkFlags(argc,argv)==0)return 0;
     

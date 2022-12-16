@@ -7,10 +7,21 @@ struct map {
     float* value; 
 };
 
+struct function{
+    char* name;
+    struct node* posfix;
+};
+
 struct node{
     void* value;
     struct node* next;
 };
+
+struct function* init_function(){
+        struct function* func = (struct function*)malloc(sizeof(struct function));
+        memset(func,0,sizeof(*func));
+        return func;
+}
 
 struct map* init_map(){
         struct map* variable = (struct map*)malloc(sizeof(struct map));
