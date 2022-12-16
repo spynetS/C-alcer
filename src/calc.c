@@ -26,13 +26,15 @@ void replaceVar(struct node* posfix, struct node* variables){
 
 
 float calculate(struct node* posfix,struct node* variables){
-    
-    printf("posfix: ");
-
-    printStack(posfix, " ");
+    if(debug == 1){
+        printf("posfix: ");
+        printStack(posfix, " ");
+    }
     replaceVar(posfix, variables);
-
-    printStack(posfix, " ");
+    
+    if(debug==1){
+        printStack(posfix, " ");
+    }
 
     struct node* operands = init_stack(); 
     int len = stackLen(posfix);

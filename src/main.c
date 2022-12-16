@@ -42,7 +42,7 @@ void calc(char* expressionStr){
     struct node* expression = getExpression(expressionStr);
     // translate infix linkedlist to posfix linkedlist
 
-    printf("\n> %f",calculate(infixToPosfix(expression),varables));
+    printf("> %f",calculate(infixToPosfix(expression),varables));
 }
 
 int checkPreDefined(char* string){
@@ -107,11 +107,6 @@ int checkPreDefined(char* string){
         return 1;
     }
     return 0;
-}
-
-
-void replaceVariables(){
-    
 }
 
 int main(int argc, char *argv[]){
