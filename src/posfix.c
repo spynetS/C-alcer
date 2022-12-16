@@ -31,7 +31,7 @@ void addOperator(struct node* stack,struct node* output,char* operator){
         int myLevel = getLevel(operator);
 
         if(strcmp(peek(stack)->value,"(")==0){
-            push(stack,operator);
+            pushstr(stack,operator);
         }
         //is operator
         else{
@@ -42,12 +42,12 @@ void addOperator(struct node* stack,struct node* output,char* operator){
                     printf("top %i\n",getLevel(peek(stack)->value));
                     printf("new %i\n",myLevel);
                 }
-                push(output,pop(stack)->value);
+                pushstr(output,pop(stack)->value);
             }
-            push(stack,operator);
+            pushstr(stack,operator);
         }
     }else{
-        push(stack,operator);
+        pushstr(stack,operator);
     }
 }
 
@@ -63,13 +63,13 @@ struct node* infixToPosfix(struct node *expression){
     for(int i = 0; i < len;i++){
         char* term = get(expression,i)->value;
         if(strcmp(term,"(")==0){
-            push(stack,term);
+            pushstr(stack,term);
         }
-        //pop all operators untill the next ( and push top output
+        //pop all operators untill the next ( and pushstr top output
         else if(strcmp(term,")")==0){
             char* poped = pop(stack)->value; 
             while(0==0){
-                push(output,poped);
+                pushstr(output,poped);
 
                 if(strcmp(peek(stack)->value,"(")==0) break;
 
@@ -82,7 +82,7 @@ struct node* infixToPosfix(struct node *expression){
         else if(isOperator(term)==0){
             addOperator(stack, output,term);
         }else{
-            push(output,term);
+            pushstr(output,term);
         }
 
         if(debug==1){
@@ -95,7 +95,7 @@ struct node* infixToPosfix(struct node *expression){
     // add the remaining operat operators to the output 
     int slen = stackLen(stack);
     for(int i = 0; i < slen;i++){
-       push(output,pop(stack)->value);
+       pushstr(output,pop(stack)->value);
     }
     
     /* printStack(stack," "); */
@@ -110,7 +110,7 @@ char* parseNegativeNumbers(char* expressionStr,size_t size){
     int count = 0;
     int isNeg = 0;
     for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
-        if(isOperator(&character)==0 ){
+        if(isOperator(&character) == 0 ){
             if(isOp == 1 && character == '-'){
                 ex[count] = '(';
                 count++;
@@ -165,10 +165,10 @@ struct node* getExpression(char* expressionS){
         // if the char is a operator add the prev word to the list
         if(isOperator(&character)==0 || character=='(' || character == ')' ){
             if(strlen(word)>0){
-                push(expression,word);
+                pushstr(expression,word);
                 /* printStack(expression,":"); */
             }
-            push(expression,&character);
+            pushstr(expression,&character);
             memset(word,0,sizeof(word));
             count=0;
             continue;
@@ -179,7 +179,7 @@ struct node* getExpression(char* expressionS){
 
         count++;
     }
-    push(expression,word);
+    pushstr(expression,word);
     if(debug==1){
         printStack(expression," ");
     }
