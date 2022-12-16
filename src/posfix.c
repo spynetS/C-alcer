@@ -163,7 +163,7 @@ struct node* getExpression(char* expressionS){
     int count = 0;
     for (char character = *expressionStr; character != '\0'; character = *++expressionStr){
         // if the char is a operator add the prev word to the list
-        if(isOperator(&character)==0 || character=='(' || character = ')' ){
+        if(isOperator(&character)==0 || character=='(' || character == ')' ){
             if(strlen(word)>0){
                 push(expression,word);
                 /* printStack(expression,":"); */
