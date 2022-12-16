@@ -11,6 +11,7 @@
 char input[128];
 int loop = 1;
 
+
 int checkFlags(int argc, char *argv[]){
     // 1 continue with prorgam 0 to stop
     if(argc>1){

@@ -3,7 +3,7 @@
 
 
 struct node{
-    char* value;
+    void* value;
     struct node* next;
 };
 /**
@@ -21,7 +21,7 @@ struct node* init_stack(){
 /**
  * adds a new node to linked list with value value
  * */
-void push(struct node* nodes,char* value){
+void push(struct node* nodes,void* value){
     struct node* pNode = nodes;
     /* printf("push %s\n",value); */
     while(pNode->next != NULL){
@@ -32,8 +32,24 @@ void push(struct node* nodes,char* value){
     newNode->next = NULL;
     
     newNode->value = malloc(sizeof(value)+1);
-
+    
     strcpy(newNode->value,value);
+
+    pNode->next = newNode;
+}
+void pushf(struct node* nodes,void* value){
+    struct node* pNode = nodes;
+    /* printf("push %s\n",value); */
+    while(pNode->next != NULL){
+        pNode = pNode->next;
+    }
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    /* memset(newNode,0,sizeof(struct node)); */
+    newNode->next = NULL;
+    
+    /* newNode->value = malloc(sizeof(value)+1); */
+
+    newNode->value = value;
 
     pNode->next = newNode;
 }
