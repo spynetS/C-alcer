@@ -10,7 +10,7 @@
 
 char input[128];
 int loop = 1;
-struct node* varables;
+struct node* variables;
 
 int checkFlags(int argc, char *argv[]){
     // 1 continue with prorgam 0 to stop
@@ -48,8 +48,9 @@ void calc(char* expressionStr){
     //parsed string to linkedlist
     struct node* expression = getExpression(expressionStr);
     // translate infix linkedlist to posfix linkedlist
-    printf("%f",calculate(infixToPosfix(expression),varables));
+    printf("%f",calculate(infixToPosfix(expression),variables));
 }
+
 
 void setVariable(char* string){
     char varname[256];
@@ -60,7 +61,7 @@ void setVariable(char* string){
             break;
         }
         varname[i] = string[i];
-        equal++;            
+        equal++;
     }
     // get value
     char value[256];
@@ -72,23 +73,28 @@ void setVariable(char* string){
     struct node* expression = getExpression(value);
 
     // translate infix linkedlist to posfix linkedlist
-    float calculated = calculate(infixToPosfix(expression),varables);
+    float calculated = calculate(infixToPosfix(expression),variables);
 
-    int varLen = stackLen(varables);
+    int varLen = stackLen(variables);
 
-    struct map* variable = init_map();
+    struct map* variable;
     //set varable struct to the one with the same name
     for(int i = 0;i < varLen; i++ ){
         if(debug==1){
             printf("remap variable name");
         }
-        struct node* vNode = (struct node*)get(varables,i);
+        struct node* vNode = (struct node*)get(variables,i);
         if(strcmp(varname,((struct map*)vNode->value)->key)==0){
             variable = ((struct map*)vNode->value);
+            memset(variable->key,0,sizeof(*variable->key));
+            strcpy(variable->key,varname);
+
+            *variable->value = calculated;
+
+            return;
         }
     }
-
-
+    variable = init_map();
     variable->key = malloc(sizeof(char*));
     memset(variable->key,0,sizeof(*variable->key));
     strcpy(variable->key,varname);
@@ -97,8 +103,9 @@ void setVariable(char* string){
     *variable->value = calculated;
 
 
-    push(varables,variable);
+    push(variables,variable);
 }
+
 
 int checkPreDefined(char* string){
     if(strcmp(string, "exit")==0){
@@ -120,7 +127,7 @@ int checkPreDefined(char* string){
 
 int main(int argc, char *argv[]){
 
-    varables = init_stack();
+    variables = init_stack();
 
     if(checkFlags(argc,argv)==0)return 0;
     
