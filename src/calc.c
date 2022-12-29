@@ -3,7 +3,7 @@
 #include <string.h>
 
 
-void replaceVar(struct node* posfix, struct node* variables){
+void replaceVar1(struct node* posfix, struct node* variables){
     
     int len = stackLen(posfix);
     int varableslen = stackLen(variables);
@@ -30,7 +30,7 @@ float calculate(struct node* posfix,struct node* variables){
         printf("posfix: ");
         printStack(posfix, " ");
     }
-    replaceVar(posfix, variables);
+    //replaceVar(posfix, variables);
     
     if(debug==1){
         printStack(posfix, " ");

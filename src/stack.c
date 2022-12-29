@@ -4,7 +4,7 @@
 
 struct map {
     char* key;
-    float* value; 
+    char* value; 
 };
 
 struct node{
@@ -66,6 +66,28 @@ void push(struct node* nodes,void* value){
 
     pNode->next = newNode;
 }
+void insert(struct node* nodes, void* value, int index){
+    struct node* pNode = nodes;
+    /* printf("push %s\n",value); */
+    int i =0;
+    struct node* prev=NULL;
+    while(pNode->next != NULL){
+        if(i == index) break;
+        prev = pNode;
+        pNode = pNode->next;
+        i++;
+    }
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    /* memset(newNode,0,sizeof(struct node)); */
+    newNode->next = pNode->next;
+    
+    /* newNode->value = malloc(sizeof(value)+1); */
+
+    newNode->value = value;
+    pNode->next = newNode;
+
+
+}
 void printStack(struct node *head,const char* sep){
 
     struct node* pNode = head;
@@ -104,6 +126,21 @@ struct node* get(struct node* head, int i){
         n++;
     }
     return NULL;
+}
+void removeNode(struct node* head, int i){
+    int n = 0; 
+    struct node* pNode = head;
+    struct node* prev = NULL;
+    while(pNode->next != NULL){
+        prev = pNode;
+        pNode = pNode->next;
+        if(n == i) {
+            prev->next = pNode->next;
+            pNode = NULL;
+            return;
+        };
+        n++;
+    }
 }
 /**
  * return last element

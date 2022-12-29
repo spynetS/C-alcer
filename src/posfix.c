@@ -5,6 +5,7 @@
 #include <string.h>
 
 int debug = 0; // 1 will log what its doing
+struct node* variables;
 
 int isOperator(char *operator) {
   if (*operator== '^')
@@ -39,10 +40,11 @@ void addOperator(struct node *stack, struct node *output, char *operator) {
 
   if (stackLen(stack) > 0) {
     int myLevel = getLevel(operator);
-
+    
     // is operator
     while (stackLen(stack) > 0 && myLevel <= getLevel(peek(stack)->value)) {
-      if (*(char *)peek(stack)->value == '(') {
+      if (*(char *)peek(stack)->value == '(' ) {
+          printf("NO NOT HERE\n");
           pop(stack);
           return;
       }
@@ -59,6 +61,25 @@ void addOperator(struct node *stack, struct node *output, char *operator) {
   }
 }
 
+void replaceVar(struct node* expression){
+    int exLen = stackLen(expression);
+    int varLen = stackLen(variables);
+    for(int i = 0; i < exLen;i++){
+        char* term = (char*)get(expression,i)->value;
+        for(int j = 0; j < varLen; j++){
+            struct map* var = (struct map*)get(variables,j)->value;
+            if(strcmp(term, (char * )var->key) == 0){
+                insert(expression, "(",i);
+                insert(expression, "0",i+1);
+                insert(expression, "-",i+2);
+                insert(expression, var->value,i+3);
+                insert(expression, ")",i+4);
+                removeNode(expression, i+5);
+            }
+        }
+    }
+}
+
 // Returns a string in posfixform from a linkedlist of infix
 struct node *infixToPosfix(struct node *expression) {
   // holds the operators
@@ -67,6 +88,12 @@ struct node *infixToPosfix(struct node *expression) {
   struct node *output = init_stack();
 
   int len = stackLen(expression);
+
+  printf("before var \n");
+  printStack(expression," ");
+  replaceVar(expression);
+  printStack(expression," ");
+  printf("after var \n");
 
   for (int i = 0; i < len; i++) {
     char *term = (char *)get(expression, i)->value;
@@ -182,6 +209,28 @@ char *parseNegativeNumbers(char *expressionStr, size_t size) {
   ex[count] = '\0';
   return strdup(ex);
 }
+
+/* void replaceVar2(char* expression){ */
+
+/*     char word[256]; */
+/*     int count = 0; */
+
+/*     int varlen = stackLen(variables); */
+/*     char ex[256]; */
+/*     for (char character = *expression; character != '\0'; character = *++expression) { */
+        
+/*         for(int i = 0; i < varlen; i++){ */
+/*             struct map* variable = (struct map*)get(variables,i)->value; */
+/*             if(strcmp(word, variable->key)==0){ */
+/*                 if(strchr(variable->key,"-")!=NULL){ */
+
+/*                 } */
+/*             } */
+/*         } */
+/*         word[count] = character; */
+/*         count++; */
+/*     } */
+/* } */
 
 /*
  *Infix string addded all operands and operators to a linkded list

@@ -10,7 +10,6 @@
 
 char input[128];
 int loop = 1;
-struct node* variables;
 
 int checkFlags(int argc, char *argv[]){
     // 1 continue with prorgam 0 to stop
@@ -73,8 +72,13 @@ void setVariable(char* string){
     struct node* expression = getExpression(value);
 
     // translate infix linkedlist to posfix linkedlist
-    float calculated = calculate(infixToPosfix(expression),variables);
+    float calc = calculate(infixToPosfix(expression),variables)*-1;
 
+    char buffer[256];
+    int ret = snprintf(buffer, sizeof buffer, "%f", calc);
+
+    char* calculated = &buffer[0]; //parseNegativeNumbers(value,sizeof(value));
+    printf("variable should be %s\n",calculated);
     int varLen = stackLen(variables);
 
     struct map* variable;
@@ -89,7 +93,10 @@ void setVariable(char* string){
             memset(variable->key,0,sizeof(*variable->key));
             strcpy(variable->key,varname);
 
-            *variable->value = calculated;
+            memset(variable->value,0,sizeof(*variable->value));
+            strcpy(variable->value,calculated);
+
+            /* *variable->value = calculated; */
 
             return;
         }
@@ -100,7 +107,7 @@ void setVariable(char* string){
     strcpy(variable->key,varname);
 
     variable->value = malloc(sizeof(float));
-    *variable->value = calculated;
+    strcpy(variable->value,calculated);
 
 
     push(variables,variable);
