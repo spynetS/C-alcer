@@ -44,6 +44,7 @@ void pushstr(struct node* nodes,void* value){
     newNode->next = NULL;
     
     newNode->value = malloc(sizeof(value)+1);
+    memset(newNode->value,0,sizeof(value)+1);
     
     strcpy(newNode->value,value);
 
