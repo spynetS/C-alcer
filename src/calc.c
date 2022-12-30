@@ -43,37 +43,50 @@ float calculate(struct node* posfix,struct node* variables){
         char* term = get(posfix,i)->value;     
         if(isOperator(term)==0){
 
-            float f2 = *(float*)pop(operands)->value;
-            float f1 = *(float*)pop(operands)->value;
+            float *f2 = (float*)pop(operands)->value;
+            float *f1 = (float*)pop(operands)->value;
 
             if(*term=='+'){
-                float new = (f1 + f2);
-                push(operands,&new);
+                float* new = malloc(sizeof(float*));
+                memset(new,0,sizeof(float));
+                *new = (*f1 + *f2);
+                push(operands,new);
             }
             else if(*term=='-'){
                 //printf("%f",*(float*)peek(operands)->value); 
-                float new = f1 - f2;
-                push(operands,&new);
+                float* new = malloc(sizeof(float*));
+                memset(new,0,sizeof(float));
+                *new = (*f1 - *f2);
+                push(operands,new);
             }
             else if(*term=='*'){
-                float new = f1 * f2;
-                push(operands,&new);
+                float* new = malloc(sizeof(float*));
+                memset(new,0,sizeof(float));
+                *new = (*f1 * *f2);
+                push(operands,new);
             }
             else if(*term=='/'){
-                float new = f1 / f2;
-                push(operands,&new);
+                float* new = malloc(sizeof(float*));
+                memset(new,0,sizeof(float));
+                *new = (*f1 / *f2);
+                push(operands,new);
             }
             else if(*term=='^'){
                 // add readl computation
-                float new = f1 + f2;
-                push(operands,&new);
+                float* new = malloc(sizeof(float*));
+                memset(new,0,sizeof(float));
+                *new = (*f1 + *f2);
+                push(operands,new);
             }
             if(debug == 1){
-                printf("%f",f1);
+                printf("%f",*f1);
                 printf(" %s ",term);
-                printf("%f = ",f2);
+                printf("%f = ",*f2);
                 printf("%f\n",*(float*)peek(operands)->value);
+                printStackf(operands," ");
             }
+            free(f1);
+            free(f2);
             
         }else if (*term!='\0'){
             float f = strtof(term,NULL);
