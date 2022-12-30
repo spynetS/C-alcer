@@ -71,7 +71,7 @@ void printStack(struct node *head,const char* sep){
     struct node* pNode = head;
     while(pNode->next != NULL){
         pNode = pNode->next;
-        printf("%s",pNode->value);
+        printf("%s",(char*)pNode->value);
         printf("%s",sep);
     }
     printf("\n");
