@@ -108,41 +108,73 @@ struct node *infixToPosfix(struct node *expression) {
   /* printStack(stack," "); */
   return output;
 }
-
 // checks for a operator followed by a negative sign and replaces it
 // with(0-[next operand])
 char *parseNegativeNumbers(char *expressionStr, size_t size) {
-
-  int isOp = 0;
+  int isOp = 1; // keeps track if previus char was a op (1 in begining to check first term)
   char ex[256]; // new string
-  int count = 0;
-  int isNeg = 0;
-  for (char character = *expressionStr; character != '\0';
-       character = *++expressionStr) {
+  memset(ex,0,256);
+  int count = 0;// keep track where to add chars to new string
+  int levels = 0; // how many pernthesis we are in
+  int iPlace = 0;
+  struct node* negs = init_stack();
+  for (char character = *expressionStr; character != '\0'; character = *++expressionStr) {
+    if(debug == 1){
+      printf("before %s\n", ex);
+    }
     if (isOperator(&character) == 0) {
       if (isOp == 1 && character == '-') {
+        if(debug == 1){
+          printf("is negative %c\n", character);
+        }
         ex[count] = '(';
         count++;
         ex[count] = '0';
-        isNeg = 1;
+        printf("pushed )\n");
+        pushstr(negs,")"); 
         count++;
-      } else if (isNeg == 1) {
-        ex[count] = ')';
-        isNeg = 0;
+      } 
+      else if (stackLen(negs) > 0 && levels == 0) {
+        printf(")))%c\n",character);
+        char* neg = (char*)pop(negs)->value;
+        printf("poped %s\n",neg);
+        ex[count] = *neg;
+        free(neg);
         count++;
-        continue;
       }
       isOp = 1;
-    } else {
+    } 
+    else if(character == '('){
+        levels++;
+        isOp = 1;
+    }
+    else if(character == ')'){
+        if(stackLen(negs)>0){
+            char* neg = (char*)pop(negs)->value;
+            printf("poped %s\n",neg);
+            ex[count] = *neg;
+            free(neg);
+            count++;
+            levels--;
+        }
+    }
+    else {
       isOp = 0;
+    }
+    if(debug == 1){
+      printf("added %c\n", character);
+      printStack(negs, " ");
     }
     ex[count] = character;
 
     count++;
   }
-  if (isNeg == 1) {
-    ex[count] = ')';
-    count++;
+  if (stackLen(negs)>0) {
+      char* neg = (char*)pop(negs)->value;
+      printf("poped %s\n",neg);
+      ex[count] = *neg;
+      free(neg);
+      count++;
   }
   if (debug == 1) {
     printf("t %p\n", expressionStr);
